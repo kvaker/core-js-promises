@@ -145,8 +145,11 @@ function getAllResult(promises) {
  * [promise1, promise4, promise3, promise2] => Promise.resolved('10403020')
  */
 async function queuPromises(promises) {
-  const results = await Promise.all(promises);
-  return results.join('');
+  return promises.reduce(async (previousPromise, promise) => {
+    const acc = await previousPromise;
+    const value = await promise;
+    return acc + value;
+  }, Promise.resolve(''));
 }
 
 module.exports = {
